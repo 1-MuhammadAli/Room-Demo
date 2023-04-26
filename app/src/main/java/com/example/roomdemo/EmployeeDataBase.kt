@@ -5,13 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [EmployeeEntity::class], version = 1)
+@Database(entities = [EmployeeEntity::class], version = 2)
 abstract class EmployeeDataBase:RoomDatabase() {
 
     abstract fun employeeDao():EmployeeDao
 
     companion object{
 
+        @Volatile
         private  var INSTANCE: EmployeeDataBase? = null
 
         fun getInstance(context: Context):EmployeeDataBase{

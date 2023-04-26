@@ -13,13 +13,13 @@ import java.net.IDN
 interface EmployeeDao {
 
     @Insert
-    suspend fun insert(employeeEntity: EmployeeEntity)
+     fun insert(employeeEntity: EmployeeEntity)
 
     @Update
-    suspend fun update(employeeEntity: EmployeeEntity)
+     fun update(employeeEntity: EmployeeEntity)
 
     @Delete
-    suspend fun delete(employeeEntity: EmployeeEntity)
+     fun delete(employeeEntity: EmployeeEntity)
 
     @Query("SELECT * FROM `employee-table`")
     fun fetchAllEmployees():Flow<List<EmployeeEntity>>
