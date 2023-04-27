@@ -5,38 +5,30 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [EmployeeEntity::class], version = 2)
-abstract class EmployeeDataBase:RoomDatabase() {
+@Database(entities = [EmployeeEntity::class], version = 1)
+abstract class EmployeeDatabase: RoomDatabase() {
 
-    abstract fun employeeDao():EmployeeDao
+    abstract fun employeeDao(): EmployeeDao
 
     companion object{
+        @Volatile
+        private var INSTANCE : EmployeeDatabase? = null
 
-        //@Volatile
-        private  var INSTANCE: EmployeeDataBase? = null
-
-        fun getInstance(context: Context):EmployeeDataBase{
-
+        fun getInstance(context: Context): EmployeeDatabase{
             synchronized(this){
                 var instance = INSTANCE
 
                 if (instance == null){
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        EmployeeDataBase::class.java,
+                        EmployeeDatabase::class.java,
                         "employee_database"
-
-                    ).fallbackToDestructiveMigration()
-                        .build()
+                    ).allowMainThreadQueries().build()
 
                     INSTANCE = instance
                 }
                 return instance
             }
         }
-
-
-
-
     }
 }
