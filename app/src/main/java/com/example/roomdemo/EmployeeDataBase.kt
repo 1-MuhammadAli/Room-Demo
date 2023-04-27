@@ -12,7 +12,7 @@ abstract class EmployeeDataBase:RoomDatabase() {
 
     companion object{
 
-        @Volatile
+        //@Volatile
         private  var INSTANCE: EmployeeDataBase? = null
 
         fun getInstance(context: Context):EmployeeDataBase{
