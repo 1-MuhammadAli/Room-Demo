@@ -2,9 +2,12 @@ package com.example.roomdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.roomdemo.databinding.ActivityMainBinding
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +21,13 @@ class MainActivity : AppCompatActivity() {
         binding?.btnAdd?.setOnClickListener {
             // TODO call addrecord with employeeDao
             addRecord(employeeDao)
+        }
+
+        lifecycleScope.launch{
+            employeeDao.fetchAllEmployees().collect{
+               val list = ArrayList(it)
+                setupListOfDataIntoRecyclerView(list, employeeDao)
+            }
         }
     }
 
@@ -41,4 +51,22 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
     }
+
+    private fun setupListOfDataIntoRecyclerView(
+        employeesList:ArrayList<EmployeeEntity>,
+        employeeDao: EmployeeDao){
+        if (employeesList.isNotEmpty()){
+            val itemAdapter = ItemAdapter(employeesList
+
+            )
+            binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
+            binding?.rvItemsList?.adapter = itemAdapter
+            binding?.rvItemsList?.visibility = View.VISIBLE
+            binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
+        }else{
+            binding?.rvItemsList?.visibility = View.GONE
+            binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
+        }
+    }
+
 }
